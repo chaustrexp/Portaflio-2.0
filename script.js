@@ -96,10 +96,55 @@ document.addEventListener('DOMContentLoaded', function() {
                         behavior: 'smooth', // Desplazamiento suave
                         block: 'start'      // Alinear al inicio de la sección
                     });
+                    
+                    // Cerrar el menú hamburguesa en móviles después de hacer clic
+                    const navMenu = document.getElementById('nav-menu');
+                    const hamburger = document.getElementById('hamburger');
+                    if (navMenu && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    }
                 }
             }
         });
     });
+    
+    
+    /**
+     * ===================================
+     * MENÚ HAMBURGUESA PARA MÓVILES
+     * ===================================
+     * Maneja la apertura y cierre del menú hamburguesa
+     */
+    
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Cerrar el menú al hacer clic fuera de él
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navMenu.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+            
+            if (!isClickInsideNav && !isClickOnHamburger && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+        
+        // Cerrar el menú al redimensionar la ventana si vuelve a ser grande
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+    }
     
     
     /**
