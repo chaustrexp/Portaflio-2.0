@@ -63,7 +63,7 @@
             <div class="presentacion-content">
                 <!-- Foto de perfil -->
                 <div class="profile-image-wrapper">
-                    <img src="https://ih1.redbubble.net/image.5011498882.9325/fpp,medium,metallic,wall_texture,product,750x1000.webp" 
+                    <img src="/WhatsApp Image 2025-11-01 at 9.06.10 PM.jpeg">
                          alt="Cristian Contreras" 
                          class="profile-image">
                 </div>
@@ -400,6 +400,39 @@
 
     <!-- Enlazar archivo de JavaScript -->
     <script src="script.js"></script>
+    
+    <!-- Chatbot de Chatbase -->
+    <script>
+        (function(){
+            if(!window.chatbase||window.chatbase("getState")!=="initialized"){
+                window.chatbase=(...arguments)=>{
+                    if(!window.chatbase.q){
+                        window.chatbase.q=[]
+                    }
+                    window.chatbase.q.push(arguments)
+                };
+                window.chatbase=new Proxy(window.chatbase,{
+                    get(target,prop){
+                        if(prop==="q"){
+                            return target.q
+                        }
+                        return(...args)=>target(prop,...args)
+                    }
+                })
+            }
+            const onLoad=function(){
+                const script=document.createElement("script");
+                script.src="https://www.chatbase.co/embed.min.js";
+                script.id="uw60XWqX6JbLKB0xLzVUS";
+                script.domain="www.chatbase.co";
+                document.body.appendChild(script)
+            };
+            if(document.readyState==="complete"){
+                onLoad()
+            }else{
+                window.addEventListener("load",onLoad)
+            }
+        })();
+    </script>
 </body>
 </html>
-
