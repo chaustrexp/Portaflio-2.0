@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactoForm = document.getElementById('contacto-form');
     
     // Agregar un "escuchador" de eventos para cuando se envíe el formulario
-    contactoForm.addEventListener('submit', function(event) {
+    contactoForm.addEventListener('submit', async function(event) {
         // Prevenir el comportamiento por defecto (recargar la página)
         event.preventDefault();
         
@@ -55,14 +55,43 @@ document.addEventListener('DOMContentLoaded', function() {
             return; // Detener la ejecución si hay campos vacíos
         }
         
-        // Mostrar mensaje en la consola del navegador
-        console.log('Formulario enviado correctamente');
+        // Cambiar el texto del botón mientras se envía
+        const submitButton = contactoForm.querySelector('.btn-submit');
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Enviando...';
+        submitButton.disabled = true;
         
-        // Opcional: Mostrar un mensaje de confirmación al usuario
-        alert('¡Gracias por tu mensaje! Te contactaré pronto.');
-        
-        // Limpiar el formulario después del envío
-        contactoForm.reset();
+        try {
+            // Enviar el formulario a Formspree
+            const response = await fetch('https://formspree.io/f/mdkpqgob', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    email: correo,
+                    mensaje: mensaje
+                })
+            });
+            
+            if (response.ok) {
+                // Mostrar mensaje de éxito
+                alert('¡Gracias por tu mensaje! Te contactaré pronto.');
+                // Limpiar el formulario después del envío exitoso
+                contactoForm.reset();
+            } else {
+                throw new Error('Error al enviar el mensaje');
+            }
+        } catch (error) {
+            // Mostrar mensaje de error
+            alert('Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.');
+            console.error('Error:', error);
+        } finally {
+            // Restaurar el botón
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+        }
     });
     
     
